@@ -278,7 +278,7 @@ void calibrate(){
     else {
       // while the calibration is in progress (CAL_BUTTON is held down), keep tweaking the
       // frequency as read out by the knob, display the chnage in the second line
-      si5351.set_freq((bfo_freq + cal - frequency) * 100LL,  SI5351_PLL_FIXED, SI5351_CLK2); 
+      si5351.set_freq((bfo_freq + cal - frequency) * 100LL, SI5351_CLK2); 
       sprintf(c, "offset:%d ", cal);
       printLine2(c);
     }  
@@ -309,10 +309,10 @@ void setFrequency(unsigned long f){
   uint64_t osc_f;
   
   if (isUSB){
-    si5351.set_freq((bfo_freq + f) * 100ULL, SI5351_PLL_FIXED, SI5351_CLK2);
+    si5351.set_freq((bfo_freq + f) * 100ULL, SI5351_CLK2);
   }
   else{
-    si5351.set_freq((bfo_freq - f) * 100ULL, SI5351_PLL_FIXED, SI5351_CLK2);
+    si5351.set_freq((bfo_freq - f) * 100ULL, SI5351_CLK2);
   }
 
   frequency = f;
@@ -586,7 +586,7 @@ void setup()
   digitalWrite(TX_RX, 0);
   delay(500);
 
-  si5351.init(SI5351_CRYSTAL_LOAD_8PF,25000000l);
+  si5351.init(SI5351_CRYSTAL_LOAD_8PF,25000000l, 0);
   
   Serial.println("*Initiliazed Si5351\n");
   
@@ -598,7 +598,7 @@ void setup()
   si5351.output_enable(SI5351_CLK1, 0);
   si5351.output_enable(SI5351_CLK2, 1);
   Serial.println("*Output enabled PLL\n");
-  si5351.set_freq(500000000l ,  SI5351_PLL_FIXED, SI5351_CLK2);   
+  si5351.set_freq(500000000l , SI5351_CLK2);   
   
   Serial.println("*Si5350 ON\n");       
   mode = MODE_NORMAL;
